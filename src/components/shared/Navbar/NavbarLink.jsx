@@ -20,7 +20,7 @@ const NavbarLink = () => {
         All classes 
       </NavLink>
       <NavLink
-        to="/signIn"
+        to="/login"
         className={({ isActive, isPending }) =>
           isPending ? "pending" : isActive ? "underline" : ""
         }

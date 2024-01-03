@@ -1,26 +1,35 @@
 import { useForm } from "react-hook-form";
+// import { imageUpload } from "../../Utils/Utils";
 import { Link } from "react-router-dom";
+import { imageUpload } from "../../components/Utils/Utils";
 
-const Login = () => {
 
+const Register = () => {
 
   const {
     register,
+    // reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
   const onSubmit = async (data) => {
     console.log(data);
+    const image = data.image[0];
+    console.log(image);
 
+    const imageData = await imageUpload(image);
+    console.log(imageData);
+
+    // user registration with firebase
     
   };
 
   return (
     <div>
-      <div className="w-full min-h-screen flex  bg-cover bg-center">
+      <div className="w-full min-h-screen flex bg-cover bg-center">
         <div className="hero">
-          <div className="hero-content flex flex-row-reverse  rounded-xl justify-between">
+          <div className="hero-content flex flex-col md:flex-row  rounded-xl justify-between">
             <div
               className="text-center hidden md:flex lg:text-left w-1/2"
               data-aos="fade-right"
@@ -32,14 +41,26 @@ const Login = () => {
               />
             </div>
             <div
-              className="card w-1/1  flex-shrink-0 shadow-2xl "
+              className="card w-1/1  flex-shrink-0 shadow-2xl"
               data-aos="fade-left"
             >
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="card-body w-[350px]"
               >
-                <h2 className="text-center text-3xl font-bold mt-5">Login</h2>
+                <h2 className="text-center text-3xl font-bold mt-5">Sign Up</h2>
+                <div className="form-control">
+                  <label className="label"></label>
+                  <input
+                    type="text"
+                    {...register("name", { required: true })}
+                    placeholder="Full Name"
+                    className="input input-bordered"
+                  />
+                  {errors.name && (
+                    <span className="text-[#006ce1]">Name is required</span>
+                  )}
+                </div>
 
                 <div className="form-control">
                   <label className="label"></label>
@@ -61,15 +82,13 @@ const Login = () => {
                       required: true,
                       minLength: 6,
                       maxLength: 20,
+                      // TODO: uncomment this validation
+                      // pattern:
+                      //   /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8}/,
                     })}
                     placeholder="Password"
                     className="input input-bordered"
                   />
-                  <label className="label">
-                    <a href="#" className="label-text-alt link link-hover">
-                      Forgot password?
-                    </a>
-                  </label>
 
                   {errors.password?.type === "required" && (
                     <p className="text-[#006ce1]">Password is required</p>
@@ -92,24 +111,37 @@ const Login = () => {
                   )}
                 </div>
 
+                <div>
+                  <label htmlFor="image" className="block mb-2 text-sm">
+                    Upload Profile Image:
+                  </label>
+                  <input
+                    {...register("image", { required: true })}
+                    required
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                  />
+                  
+                </div>
+
                 <div className="form-control mt-2">
                   <button
                     type="submit"
-                    className="btn  bg-[#6198ff] hover:bg-[#006ce1] text-white "
+                    className="btn   bg-[#61adff] hover:bg-[#006ce1] text-white  "
                   >
-                    Login Now
+                    Sign Up
                   </button>
                   <p className="text-[#006ce1] text-center mt-2">
-                    Are you new user?
-                    <Link to={"/register"}>
-                      <span className="font-semibold"> Register Now </span>
+                    Already registered?{" "}
+                    <Link to={"/login"}>
+                      <span className="font-semibold">login Now</span>
                     </Link>
                   </p>
-
                   <div className="divider">or</div>
                 </div>
                 <div>
-                  {/* social login */}
+                  {/* SocialLogin */}
 				
                 </div>
               </form>
@@ -121,4 +153,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

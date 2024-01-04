@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import SocialLogin from "../../components/shared/SocialLogin/SocialLogin";
 
 const Login = () => {
   const { signIn } = useAuth();
@@ -23,7 +24,8 @@ const Login = () => {
       navigate("/")
     })
     .catch(err => {
-      console.log(err.message);
+      console.log(err?.message);
+      toast.error(err?.message);
     })
   };
 
@@ -119,7 +121,7 @@ const Login = () => {
 
                   <div className="divider">or</div>
                 </div>
-                <div>{/* social login */}</div>
+                <div><SocialLogin/></div>
               </form>
             </div>
           </div>

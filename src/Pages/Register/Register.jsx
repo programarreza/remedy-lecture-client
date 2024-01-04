@@ -4,11 +4,12 @@ import { imageUpload } from "../../components/Utils/Utils";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosLocal from "../../Hooks/useAxiosLocal";
 import toast from "react-hot-toast";
+import SocialLogin from "../../components/shared/SocialLogin/SocialLogin";
 
 const Register = () => {
   const axiosLocal = useAxiosLocal();
   const { createUser, updateUserProfile } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     register,
@@ -37,11 +38,11 @@ const Register = () => {
           console.log(userInfo);
           toast.success("Registration Successfully");
           reset();
-          navigate("/")
+          navigate("/");
         });
       })
       .catch((err) => {
-        console.log(err.message);
+        toast.error(err?.message);
       });
   };
 
@@ -159,7 +160,9 @@ const Register = () => {
                   </p>
                   <div className="divider">or</div>
                 </div>
-                <div>{/* SocialLogin */}</div>
+                <div>
+                  <SocialLogin />
+                </div>
               </form>
             </div>
           </div>

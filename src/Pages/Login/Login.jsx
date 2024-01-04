@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
-
+  const { signIn } = useAuth();
+  const navigate = useNavigate()
 
   const {
     register,
@@ -13,7 +16,15 @@ const Login = () => {
   const onSubmit = async (data) => {
     console.log(data);
 
-    
+    signIn(data.email, data.password)
+    .then(res => {
+      console.log(res.user);
+      toast.success("Login Successfully")
+      navigate("/")
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
   };
 
   return (
@@ -108,10 +119,7 @@ const Login = () => {
 
                   <div className="divider">or</div>
                 </div>
-                <div>
-                  {/* social login */}
-				
-                </div>
+                <div>{/* social login */}</div>
               </form>
             </div>
           </div>

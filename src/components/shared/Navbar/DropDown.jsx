@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import useAuth from "../../../Hooks/useAuth";
+import useAuth from "../../../Hooks/useAuth";
+
 
 const DropDown = () => {
-//   const { user, logOut } = useAuth();
+  const { user, logOut } = useAuth();
   const [isShow, setIsShow] = useState(false);
-  const user = true 
+
 
   return (
     <>
@@ -24,7 +25,6 @@ const DropDown = () => {
         </label>
       </div>
         {isShow && user ? <ul
-          // tabIndex={0}
           className="menu  absolute menu-sm dropdown-content  mt-36 z-[10] p-2 shadow bg-base-100 rounded-box w-52"
         >
           <li>
@@ -32,13 +32,14 @@ const DropDown = () => {
           </li>
 
           <li>
-            {/* <p onClick={logOut}>logout</p> */}
-          </li>
-          <li>
             <Link to="dashboard">
             <p>Dashboard</p>
             </Link>
+          </li>        
+          <li>
+            <p onClick={logOut}>logout</p>
           </li>
+
         </ul> : ""}
     </>
   );

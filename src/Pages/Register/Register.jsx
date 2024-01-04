@@ -1,28 +1,48 @@
 import { useForm } from "react-hook-form";
-// import { imageUpload } from "../../Utils/Utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { imageUpload } from "../../components/Utils/Utils";
-
+import useAuth from "../../Hooks/useAuth";
+import useAxiosLocal from "../../Hooks/useAxiosLocal";
+import toast from "react-hot-toast";
 
 const Register = () => {
+  const axiosLocal = useAxiosLocal();
+  const { createUser, updateUserProfile } = useAuth();
+  const navigate = useNavigate()
 
   const {
     register,
-    // reset,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     const image = data.image[0];
-    console.log(image);
-
     const imageData = await imageUpload(image);
-    console.log(imageData);
 
     // user registration with firebase
-    
+    createUser(data.email, data.password)
+      .then((res) => {
+        console.log(res.user);
+
+        // profile update
+        updateUserProfile(data.name, imageData?.data?.display_url).then(() => {
+          // create user entry in the database
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+            image: imageData?.data?.display_url,
+          };
+          console.log(userInfo);
+          toast.success("Registration Successfully");
+          reset();
+          navigate("/")
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -122,7 +142,6 @@ const Register = () => {
                     id="image"
                     accept="image/*"
                   />
-                  
                 </div>
 
                 <div className="form-control mt-2">
@@ -140,10 +159,7 @@ const Register = () => {
                   </p>
                   <div className="divider">or</div>
                 </div>
-                <div>
-                  {/* SocialLogin */}
-				
-                </div>
+                <div>{/* SocialLogin */}</div>
               </form>
             </div>
           </div>
